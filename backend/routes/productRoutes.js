@@ -1,7 +1,7 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
 import Product from '../models/ProductModel.js'
-
+import SubCategory from '../models/SubCategoryModel.js'
 const router = express.Router()
 
 router.post(
@@ -26,9 +26,20 @@ router.post(
   router.get(
     '/products',
     asyncHandler(async (req, res) => {
-      const productfind = await Product.find({})
-      console.log(productfind);
-      res.json(productfind)
+      const prodsTosend=[];
+      const productfind = await Product.find({})//.populate({path:'subcategory_id' , select:('subcategory -_id')})
+ productfind.forEach(async prod=>{
+  const subCat = await SubCategory.findById(
+    prod.subcategory_id
+  )
+  prodsTosend.push({
+    ...prod,
+    subCat
+  })
+
+})
+      console.log(prodsTosend);
+       res.json(prodsTosend)
     })
   )
 
@@ -36,12 +47,19 @@ router.get(
   '/:id',
   asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id)
-
-    if (product) {
-      res.json(product)
-    } else {
-      res.status(404).json({ message: 'Product not found' })
-    }
+    .populate({path:'subcategory_id',select:'subcategory-_id'})
+    res.json(product)
+    console.log(product);
+  //   const subCat = await SubCategory.findById(
+  //     product.subcategory_id
+  //   )
+  //  const resToSend={
+  //   ...product,
+  //   subCat
+  //  };
+  //  console.log(product, "prod");
+  //  console.log(resToSend,"resToSend");
+  //   res.json(resToSend)
   })
 )
 

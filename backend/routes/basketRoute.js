@@ -22,8 +22,22 @@ router.post(
         '/basket',
         asyncHandler(async (req, res) => {
           const bas = await Basket.find({})
+          .populate({path:'product_id' , select:('textile -_id')})
+          .populate({path:'user_id',select:('firstName lastName-_id')})
           console.log(bas);
           res.json(bas)
+        })
+      )
+    
+      //get by id
+      router.get(
+        '/:id',
+        asyncHandler(async (req, res) => {
+          const getBas = await Basket.findById(req.params.id)
+          .populate({path:'product_id' , select:('textile -_id')})
+          .populate({path:'user_id',select:('firstName lastName-_id')})
+          console.log(getBas);
+          res.json(getBas)
         })
       )
     

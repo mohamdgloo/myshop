@@ -1,6 +1,7 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
 import Stock from '../models/StockModel.js'
+import Product from '../models/ProductModel.js'
 
 const router = express.Router()
 
@@ -21,11 +22,24 @@ router.post(
       router.get(
         '/stock',
         asyncHandler(async (req, res) => {
-          const stockfind = await Stock.find({})
+          const stockfind = await Stock.find({}).populate({path:'product_id' , select:('textile -_id')})
           console.log(stockfind);
           res.json(stockfind)
         })
       )
 
+      router.get(
+        '/:id',
+        asyncHandler(async (req,res)=>{
+          const stockById=await Stock.findById(req.params.id)
+          .populate({path:'product_id' , select:('textile -_id')})
+          res.json(stockById)
+          // const st=await Product.findById(
+          //   stockById.product_id
+          // )
+          // const sto={...stockById,st}
+          // res.json(sto)
+        })
+      )
 export default router
 

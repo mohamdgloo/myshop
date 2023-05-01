@@ -34,7 +34,8 @@ const productSchema=mongoose.Schema({
     width:{
         type:Number,
         required: true, 
-    }
+    },
+    
 },{
    timestamps:true 
 })

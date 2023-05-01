@@ -1,7 +1,7 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
 import SubCategory from '../models/SubCategoryModel.js'
-
+import Category from '../models/CategoryModel.js'
 const router = express.Router()
 
 router.post(
@@ -21,16 +21,27 @@ router.post(
         '/subcategory',
         asyncHandler(async (req, res) => {
           const subcats = await SubCategory.find({})
-          console.log(subcats);
-          res.json(subcats)
+          .populate({path:'category_id' , select:('category -_id')})
+          // Category.find().then((cat)=>{
+          //   console.log(cat);
+          //  // res.json(cat)
+            console.log(subcats);
+            res.json(subcats)
+          // })
         })
-      )
+        )
 
       //get one subCategory
       router.get(
         '/:id',
         asyncHandler(async(req,res)=>{
           const getSub=await SubCategory.findById(req.params.id)
+          .populate({path:'category_id' , select:('category -_id')})
+        //  const categ=await Category.findById(
+        //   getSub.category_id
+        //  )
+        //  const merg={...getSub,categ}
+        //  res.json(merg)
           res.json(getSub)
           console.log(getSub);
         })
