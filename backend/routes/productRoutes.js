@@ -26,20 +26,21 @@ router.post(
   router.get(
     '/products',
     asyncHandler(async (req, res) => {
-      const prodsTosend=[];
-      const productfind = await Product.find({})//.populate({path:'subcategory_id' , select:('subcategory -_id')})
- productfind.forEach(async prod=>{
-  const subCat = await SubCategory.findById(
-    prod.subcategory_id
-  )
-  prodsTosend.push({
-    ...prod,
-    subCat
-  })
+      //const prodsTosend=[];
+      const productfind = await Product.find({}).populate({path:'subcategory_id' , select:('subcategory -_id')})
+      res.json(productfind)
+//  productfind.forEach(async prod=>{
+//   const subCat = await SubCategory.findById(
+//     prod.subcategory_id
+//   )
+//   prodsTosend.push({
+//     ...prod,
+//     subCat
+//   })
 
-})
-      console.log(prodsTosend);
-       res.json(prodsTosend)
+// })
+//       console.log(prodsTosend);
+//        res.json(prodsTosend)
     })
   )
 
