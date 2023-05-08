@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-export const content = [];
+export const content = [
+"./src/**/*.{js,ts,jsx,tsx}",];
 export const presets = [];
 export const darkMode = 'media';
 export const theme = {
@@ -985,5 +986,6 @@ export const theme = {
     50: '50',
   },
 };
-export const plugins = [];
+export const plugins = [ require("tailwindcss")("./tailwind.config.js"),
+require("autoprefixer")];
 
