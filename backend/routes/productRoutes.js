@@ -73,6 +73,8 @@ router.put(
     console.log(updateProduct);
   })
 )
+
+
 //delete product
 router.delete(
   "/:id",

@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 const ProductDeatail = () => {
     const {id}=useParams();
     const[productId,setProductId]=useState({})
+    const[practical,setPractical]=useState([])
     useEffect(()=>{
         const fetchProductiD=async()=>{
           const resProId=await axios.get(`/api/products/${id}`)
@@ -12,22 +13,31 @@ const ProductDeatail = () => {
           
         }
         fetchProductiD()
-      })
+      },[])
+    
+
+ 
+    useEffect(()=>{
+        const fetchProPra=async()=>{
+          const resProPra=await axios.get('/api/productpractical/productpractical')
+          setPractical(resProPra.data)
+          console.log(resProPra);
+        }
+        fetchProPra()
+      },[])
     
   return (
     <div className='m-auto mt-2 mb-2 h-auto md:w-5/6 bg-gray-50'>
         <div>
         <div className='flex flex-row '>
             <div className='w-1/3 h-1/3'>
-                {productId.image}
+                <img src='' alt='s' />
+              
             </div>
             <div className='flex flex-col m-4 p-4'>
                 <h1 className='font-bold '>
                     {productId.textile}
                 </h1>
-                <p>
-                    {productId.description}
-                </p>
                 <p>
                     {productId.price}
                 </p>
@@ -40,7 +50,9 @@ const ProductDeatail = () => {
       <div>
         <table className=' rtl border border-blue-500 w-2/3 mx-auto text-center'>
             <thead className='border border-blue-700 text-center'>
-              <th>مشخصات</th>
+                <tr>
+                   <th>مشخصات</th>
+                </tr>
             </thead>
             <tbody className='font-bold'>
                 <tr>
@@ -49,7 +61,18 @@ const ProductDeatail = () => {
                 </tr>
                 <tr>
                     <td>کاربرد:</td> 
-                    <td>  {productId.practical}</td>
+                   <td>
+                        {practical.map((pra,index)=>{
+                            if(pra.product_id.textile===productId.textile){
+                            return(
+                            <div key={index}>
+                                {pra.practical_id.practical}
+                                </div>
+                            )
+                        }else{return(null)}
+                        })}
+                   </td>
+                    
                 </tr>
                 <tr> 
                     <td> ایستایی:</td>
@@ -67,8 +90,19 @@ const ProductDeatail = () => {
             
         </table>
       </div>
+      <div className='text-center border border-blue-300 mt-2 p-2 w-1/3 m-auto'>
+        <form> 
+            <div className=' flex flex-col '>
+                <label>متر</label>
+                <input className='rtl border' type='number' placeholder='انتخاب متراژ...'/>
+            </div>
+        </form>
+      </div>
       <div className='flex justify-center'>
-           <button className='mt-2 p-2 bg-transparent hover:bg-blue-500 text-blue-700 hover:text-white border border-blue-500 rounded'>اضافه به سبد خرید</button>
+           <button 
+           className='mt-2 p-2 bg-transparent hover:bg-blue-500 text-blue-700 hover:text-white border border-blue-500 rounded'>
+            اضافه به سبد خرید
+            </button>
       </div>
     </div>
   )
