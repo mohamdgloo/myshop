@@ -41,5 +41,15 @@ router.post(
           // res.json(sto)
         })
       )
+
+      router.put(
+        '/:id',
+        asyncHandler(async(req,res)=>{
+          const updateStock=await Stock.findByIdAndUpdate(req.params.id,req.body)
+          res.json(updateStock)
+          console.log(updateStock);
+        })
+      )
+      
 export default router
 

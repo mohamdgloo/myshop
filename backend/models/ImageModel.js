@@ -12,6 +12,10 @@ const imageSchema=mongoose.Schema({
        data:Buffer,
        contentType:String
     },
+    path:{
+      type:String,
+      require:true
+    }
 },{
    timestamps:true 
 })

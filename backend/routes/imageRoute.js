@@ -5,6 +5,18 @@ import multer from 'multer'
 import Product from '../models/ProductModel.js'
 const router = express.Router()
 
+// router.get('/', (req, res) => res.render('upload'))
+// router.post('/uploads', function(req, res) {
+//     const file = req.files.upload
+//     const filePath = path.join(__dirname, 'public', 'images', `${file.name}`)
+  
+//     file.mv(filePath, err => {
+//         if (err) return res.status(500).send(err)
+//         res.redirect('/')
+//     })
+//   })
+
+
 //storage
 const Storage=multer.diskStorage({
   destination:"uploads",
@@ -30,7 +42,8 @@ router.post(
           image:{
             data:req.files[0].filename,
             contentType:'image/jpg'
-          }
+          },
+          path:req.body.path,
         })
         imgroute.save().then(val=>{
           res.json({msg:"add image",val:val})
@@ -62,5 +75,8 @@ router.post(
 
         })
       )
+
+
+
 export default router
 

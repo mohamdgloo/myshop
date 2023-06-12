@@ -46,5 +46,16 @@ router.post(
           console.log(getSub);
         })
       )
+      
+      //get subcategory by category_id
+      router.get(
+        '/subcatbycategory/:id',
+        asyncHandler(async(req,res)=>{
+          const getSubByCat=await SubCategory.find({}).where('category_id').equals(req.params.id)
+          .populate({path:'category_id' , select:('category -_id')})
+          res.json(getSubByCat)
+          console.log(getSubByCat);
+        })
+      )
 export default router
 
