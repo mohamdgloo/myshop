@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { addToCart } from '../../ACTION/CartAction';
+import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { addToCart, removeFromCart } from '../../ACTION/CartAction';
 import { listProductImage } from '../../ACTION/ProductAction';
 
 const Cart = () => {
-   const productId=useParams()
+   const {id}=useParams()
   // console.log(productId);
   // const [searchParams,setSearchParams]=useSearchParams("");
   // const quantity=Number(searchParams.toString().split("=")[1]);
@@ -27,13 +27,24 @@ const Cart = () => {
       dispatch(listProductImage())
      },[dispatch])
      
+     const removeFromCartHandler=(_id)=>{
+      console.log('remove');
+      dispatch(removeFromCart(_id))
+     }
+     const checkoutHndler=()=>{
+      Navigate('/login?redirect=shipping')
+     }
   return ( 
     <div className='rtl border border-blue-300 w=[100%] mt-5 m-auto rounded'>
        {cartItems.length===0?<p> محصولی نی منش</p>:( 
        <div className='flex flex-col justify-between '>
         {cartItems.map(item=>(
           <>
-          <div className='border border-blue-300 rounded flex flex-row-reverse items-center justify-around p-2 m-2 w-[50%] '>
+          <div className='border border-blue-300 rounded flex flex-row-reverse items-center justify-around p-2 mt-2 mb-2 mr-auto ml-auto w-[50%] '>
+           <button onClick={()=>removeFromCartHandler(item._id)}>
+              <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="24px" height="24px">
+                <path d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 6.0683594 22 L 17.931641 22 L 19.634766 7 L 4.3652344 7 z"/></svg>
+            </button>
            <div className='flex flex-col m-3'>
             <div className=''>
               
@@ -68,7 +79,7 @@ const Cart = () => {
                   </p>
               </div>
               <div  className='border bg-blue-700 text-white p-2 m-2 text-center'>
-                <button>تکمیل سفارش</button>
+                <button onClick={checkoutHndler}>تکمیل سفارش</button>
               </div>
           </div>
       </div>

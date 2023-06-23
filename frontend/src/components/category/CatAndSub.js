@@ -8,7 +8,7 @@ const CatAndSub = () => {
    
 const handleClickForSub=(e)=>{
        // setShowSub(!showSub)
-        //console.log(subCategory);
+        console.log(subCategory);
         console.log(e._id);
 }
     useEffect(()=>{
@@ -35,13 +35,14 @@ const handleClickForSub=(e)=>{
         {category.map((category,index)=>{
           return(
             <div key={index}  
-            className='border border-blue-300 rounded text-center text-blue-900 cursor-pointer' 
-            
-            >          
-               
-                 <button onClick={()=>{console.log(category._id);setShowSub(!showSub)}} >{category.category}</button>  
+            className='border border-blue-300 rounded text-center text-blue-900 cursor-pointer'          
+            >                       
+                 <button 
+                   onClick={()=>{console.log(category._id);setShowSub(!showSub)}} >
+                     {category.category}
+                 </button>  
                  
-                {/* {showSub&&<div className='border border-blue-300 rounded w-3/3 h-auto'>
+                {showSub&&<div className='border border-blue-300 rounded w-3/3 h-auto'>
                   {subCategory.map((subc,index)=>{
                     if(subc.category_id===category.category){
                       return(
@@ -49,12 +50,11 @@ const handleClickForSub=(e)=>{
                       )
                     }else{return(null)}
                   })}
-                </div>}         */}
+                </div>}
             </div>
           )
         })}
       </div>
-   
       <div className='rtl '>
         {showSub&&
                 <div className='border border-blue-300 rounded w-3/3 h-auto'>

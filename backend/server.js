@@ -63,7 +63,6 @@ app.use('/api/basket',basketRoute)
 
 //user route
 app.use('/api/users',userRoute)
-//app.use('/cart/api/products', productRoutes)
 
 const PORT = process.env.PORT || 5000
 

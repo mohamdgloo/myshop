@@ -4,13 +4,13 @@ import {useDispatch,useSelector} from 'react-redux'
 import React, { useEffect, useState} from 'react'
 import './home.css'
 import { Link } from 'react-router-dom';
-import { ImageContext } from '../../App';
+//import { ImageContext } from '../../App';
 import CatAndSub from '../category/CatAndSub';
 import { listProductImage, listProducts } from '../../ACTION/ProductAction';
 const Home = () => {
   
   const[practical,setPractical]=useState([])
-  const value = React.useContext(ImageContext);  
+  //const value = React.useContext(ImageContext);  
 
   const dispatch=useDispatch()
 
@@ -47,14 +47,14 @@ const Home = () => {
             })}
        </div>
       
-<p className='rtl'>image with context</p>
+{/* <p className='rtl'>image with context</p>
       <div className='rtl grid grid-cols-6 gap-2 my-5'>
         {value.map((shot,index)=>{
           return(
             <div  key={index}><img src={shot.path} alt='...'/></div>
           )
         })}
-      </div>
+      </div> */}
       <p className='rtl'>image with redux</p>
       <div className='rtl grid grid-cols-6 gap-2 my-5'>
         {shot.map((shot,index)=>{
@@ -75,7 +75,7 @@ const Home = () => {
                 <Link to={`/product/${product._id}`} >
                
                 <div>
-                {value.map((shot,index)=>{
+                {shot.map((shot,index)=>{
                     if(shot.product_id.textile===product.textile){
                       return(
                              <div className='border-3 border-blue-800'  key={index}><img src={shot.path} alt='...'/></div>
