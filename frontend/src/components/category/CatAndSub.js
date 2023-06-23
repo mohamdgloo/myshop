@@ -18,7 +18,10 @@ const CatAndSub = () => {
     };
     fetchCategory();
   }, []);
-
+  useEffect(() => {
+    console.log({ subCategory });
+    console.log({ category });
+  }, [category, subCategory]);
   const fetchSubCatWithCat = async (id) => {
     const resSubCatWithCat = await axios.get(
       `api/subcategory/subcatbycategory/${id}`
@@ -64,11 +67,7 @@ const CatAndSub = () => {
         {showSub && (
           <div className="border border-blue-300 rounded w-3/3 h-auto">
             {subCategory.map((subc, index) => {
-              if (subc.category_id === category._id) {
-                return <p key={index}>{subc.subcategory}</p>;
-              } else {
-                return null;
-              }
+              return <p key={index}>{subc.subcategory}</p>;
             })}
           </div>
         )}
