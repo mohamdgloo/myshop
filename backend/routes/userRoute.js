@@ -1,17 +1,17 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
-import User from '../models/UserModel.js'
 import bcrypt from 'bcryptjs'
 import pkg from 'jsonwebtoken';
 import {secretKey}  from './config.js';
-import { protect } from '../middleware/authMiddleware.js';
+import  protect  from '../middleware/authMiddleware.js';
+import User from '../models/UserModel.js';
  const {sign}=pkg
 //create users
 const router = express.Router()
 router.post(
   '/createusers',
   asyncHandler(async (req, res) => { 
-    const {password}=req.body;
+    const {password , email}=req.body;
      // Check if the user with the same email already exists
      const existingUser = await User.findOne({ email });
      if (existingUser) {
@@ -22,7 +22,7 @@ router.post(
         const users = new User({
           firstName:req.body.firstName,
           lastName:req.body.lastName,
-          email:req.body.email,
+          email:email,
           password:hash,
           phone:req.body.phone,
           isAdmin:req.body.isAdmin, 
@@ -59,9 +59,33 @@ router.post(
           const accessToken=sign({email:user.email,id:user._id},secretKey);
 
           res.json({accessToken ,msg:"you logged in"} );
-          
+        
         });
       });
+
+       // profile:The order of route definitions is important in Express, 
+       //and if the /:id route is defined before the /profile route, 
+       //it will match the /profile route and cause unexpected behavior.
+       router.get(
+        '/profile',protect
+        , asyncHandler(async (req, res) => { 
+          console.log("profile id:",req.user.id);
+          const userprofile = await User.findById(req.user.id);
+          console.log(userprofile)
+        if (userprofile) {
+          res.json({
+            _id:userprofile._id,
+            firstName:userprofile.firstName,
+            lastName:userprofile.lastName,
+            email:userprofile.email, 
+            phone:userprofile.phone,
+            isAdmin:userprofile.isAdmin,   
+          })
+        } else {
+          res.status(404)
+          throw new Error('User not found')
+        }
+      }))
 
       //get users
       router.get(
@@ -79,10 +103,15 @@ router.post(
         '/:id',protect
        , asyncHandler(async (req, res) => {
           const userid = await User.findById(req.params.id)
+          console.log("hi:",req.user.id);
           console.log(userid);
           res.json(userid)
         })
       )
+
+    
+   
+
       //update user
       router.put(
         '/:id',
