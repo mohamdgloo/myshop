@@ -50,7 +50,7 @@ router.get(
     const product = await Product.findById(req.params.id)
     .populate({path:'subcategory_id',select:'subcategory-_id'})
     res.json(product)
-    console.log(product);
+    //console.log(product);
   //   const subCat = await SubCategory.findById(
   //     product.subcategory_id
   //   )
@@ -70,7 +70,7 @@ router.put(
   asyncHandler(async(req,res)=>{
     const updateProduct=await Product.findByIdAndUpdate(req.params.id,req.body)
     res.json(updateProduct)
-    console.log(updateProduct);
+   // console.log(updateProduct);
   })
 )
 
@@ -81,7 +81,7 @@ router.delete(
   asyncHandler(async(req,res)=>{
     const deleteProduct=await Product.findByIdAndDelete(req.params.id)
     res.json(deleteProduct)
-    console.log(deleteProduct);
+    //console.log(deleteProduct);
   })
 )
 export default router

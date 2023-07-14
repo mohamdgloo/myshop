@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import {  useLocation, useNavigate } from 'react-router-dom';
-import { register } from '../../ACTION/UserAction';
+import { useNavigate } from 'react-router-dom';
+import { getUserDetails, updateUserProfile } from '../../ACTION/UserAction.js';
 
-const Registration = () => {
+const Profile = () => {
 
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
 
 
@@ -18,34 +17,55 @@ const Registration = () => {
   const [firstName, setFirstName] = useState('');
   const [message, setMessage] = useState(null);
 
-  const userRegister = useSelector((state) => state.userRegister);
-  const { loading, error, userInfo } = userRegister;
+  const userDetails = useSelector((state) => state.userDetails);
+  const { loading, error, userprofile} =userDetails ;
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
-  const redirect = new URLSearchParams(location.search).get('redirect') || '/';
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
+  const { success } = userUpdateProfile
 
+  
   useEffect(() => {
-    if (userInfo) {
-      navigate(redirect);
+    if (!userInfo) {
+      navigate('/login');
+    }else{
+        if (!userprofile.email) {
+            dispatch(getUserDetails('profile'))
+          } else {
+            setFirstName(userprofile.firstName)
+            setLastName(userprofile.lastName)
+            setPhone(userprofile.phone)
+            setEmail(userprofile.email)
+          }
     }
-  }, [userInfo, navigate, redirect]);
+  }, [dispatch, userInfo, userprofile, navigate]);
 
+    console.log(userprofile);
   const handleSubmit = (e) => {
     e.preventDefault();
     if(password !== confirmPassword){
       setMessage('password do not match')
     }else{
-      dispatch(register(firstName,lastName,phone,email,password))
+     dispatch(updateUserProfile({_id:updateUserProfile._id,firstName,lastName,phone,email,password}))
     }
     
   };
 
   return (
+    <>
+       <div className='flex flex-row items-center justify-between border border-blue-300 m-auto mt-1 rounded'>
+        <p>product name</p>
+        <p>qty</p>
+        <p>_id</p>
+       </div>
     <div className='border border-blue-300 w-4/6 mt-5 m-auto rounded'>
     <div className='flex flex-col justify-center  '>
-       <p className=' text-center mt-1 text-4xl'>ثبت نام</p>
+       <p className=' text-center mt-1 text-4xl'>پروفایل</p>
        <form className='mt-1 m-auto w-4/6' onSubmit={handleSubmit}>
        {message && <p>{message}</p>}
+       {success && <p>پروفایل ویرایش شد</p>}
        {error && <p>{error}</p>}
        {loading && <p>درحال بارگیری</p>}
        <div className='py-2 mt-1 flex flex-col '>
@@ -106,14 +126,15 @@ const Registration = () => {
               <div className="mt-2 mb-2">       
                 <button type='submit' 
                    className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-600  ">
-                      ثبت نام
+                     ویرایش
                 </button>  
               </div>
             </div>
           </form>   
         </div>
   </div>
+  </>
   )
 }
 
-export default Registration
+export default Profile

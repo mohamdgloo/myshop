@@ -23,7 +23,7 @@ router.post(
         '/stock',
         asyncHandler(async (req, res) => {
           const stockfind = await Stock.find({}).populate({path:'product_id' , select:('textile -_id')})
-          console.log(stockfind);
+       //   console.log(stockfind);
           res.json(stockfind)
         })
       )
@@ -47,7 +47,7 @@ router.post(
         asyncHandler(async(req,res)=>{
           const updateStock=await Stock.findByIdAndUpdate(req.params.id,req.body)
           res.json(updateStock)
-          console.log(updateStock);
+        //  console.log(updateStock);
         })
       )
       

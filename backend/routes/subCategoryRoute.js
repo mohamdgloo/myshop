@@ -25,7 +25,7 @@ router.post(
           // Category.find().then((cat)=>{
           //   console.log(cat);
           //  // res.json(cat)
-            console.log(subcats);
+          //  console.log(subcats);
             res.json(subcats)
           // })
         })
@@ -54,7 +54,7 @@ router.post(
           const getSubByCat=await SubCategory.find({}).where('category_id').equals(req.params.id)
           .populate({path:'category_id' , select:('category -_id')})
           res.json(getSubByCat)
-          console.log(getSubByCat);
+         // console.log(getSubByCat);
         })
       )
 export default router

@@ -8,8 +8,8 @@ const CatAndSub = () => {
 
   const handleClickForSub = (e) => {
     // setShowSub(!showSub)
-    console.log(subCategory);
-    console.log(e._id);
+   // console.log(subCategory);
+  //  console.log(e._id);
   };
   useEffect(() => {
     const fetchCategory = async () => {
@@ -19,8 +19,8 @@ const CatAndSub = () => {
     fetchCategory();
   }, []);
   useEffect(() => {
-    console.log({ subCategory });
-    console.log({ category });
+   // console.log({ subCategory });
+   // console.log({ category });
   }, [category, subCategory]);
   const fetchSubCatWithCat = async (id) => {
     const resSubCatWithCat = await axios.get(
@@ -40,7 +40,7 @@ const CatAndSub = () => {
             >
               <button
                 onClick={() => {
-                  console.log(category._id);
+              //    console.log(category._id);
                   setShowSub(!showSub);
                   fetchSubCatWithCat(category._id);
                 }}

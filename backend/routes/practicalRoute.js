@@ -20,7 +20,7 @@ router.post(
         '/practical',
         asyncHandler(async (req, res) => {
           const pracs = await Practical.find({})
-          console.log(pracs);
+          //console.log(pracs);
           res.json(pracs)
         })
       )
@@ -30,7 +30,7 @@ router.post(
       asyncHandler(async(req,res)=>{
         const getprac=await Practical.findById(req.params.id)
         res.json(getprac)
-        console.log(getprac);
+       // console.log(getprac);
       })
     )
 

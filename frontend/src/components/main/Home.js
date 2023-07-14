@@ -30,7 +30,7 @@ const Home = () => {
     const fetchProPra=async()=>{
       const resProPra=await axios.get('/api/productpractical/productpractical')
       setPractical(resProPra.data)
-      console.log(resProPra);
+      //console.log(resProPra);
     }
     fetchProPra()
   },[])

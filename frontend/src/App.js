@@ -8,6 +8,7 @@ import Cart from './components/cart/Cart'
 import ProductDeatail from './components/productdetail/ProductDeatail'
 import axios from 'axios'
 import Registration from './components/registration/Registration'
+import Profile from './components/profile/Profile'
 export const ImageContext = React.createContext();
 const App = () => {
 
@@ -30,6 +31,7 @@ const App = () => {
       <Route path='/' element={ <Home/>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path='/cart/:id?' element={ <Cart/>}/>
+      <Route path='/profile' element={ <Profile/>}/>
       <Route path='/registration' element={<Registration/>}/>
       <Route path='/product/:id' element={<ProductDeatail/>}/>
      </Routes>

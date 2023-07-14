@@ -24,7 +24,7 @@ router.post(
           const propracfind = await ProductPractical.find({})
           .populate({path:'product_id' , select:('textile -_id')})
           .populate([{path:'practical_id',select:('practical-_id')}])
-          console.log(propracfind);
+          //console.log(propracfind);
           res.json(propracfind)
         })
       )

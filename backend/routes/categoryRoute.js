@@ -18,7 +18,7 @@ router.get(
   "/category",
   asyncHandler(async (req, res) => {
     const cats = await Category.find({});
-    console.log(cats);
+  //  console.log(cats);
     res.json(cats);
   })
 );
@@ -33,7 +33,7 @@ router.get(
       .equals(req.params.id)
       .populate({ path: "category_id", select: "category -_id" });
     const response = res.json({ getcat, getSubByCat });
-    console.log({ response });
+   // console.log({ response });
     return response;
   })
 );

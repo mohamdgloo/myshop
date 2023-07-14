@@ -57,7 +57,7 @@ router.post(
         '/image',
         asyncHandler(async (req, res) => {
           const imgfind = await Image.find({}).populate({path:'product_id' , select:('textile -_id')})
-          console.log(imgfind);
+         // console.log(imgfind);
           res.json(imgfind)
         })
       )
