@@ -6,21 +6,10 @@ import { listProductImage } from '../../ACTION/ProductAction';
 
 const Cart = () => {
    const {id}=useParams()
-  // console.log(productId);
-  // const [searchParams,setSearchParams]=useSearchParams("");
-  // const quantity=Number(searchParams.toString().split("=")[1]);
-  // console.log(quantity);
-  // const navigate=useNavigate()
    const dispatch=useDispatch()
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
   console.log(cartItems);
-  // useEffect(()=>{
-  //   if(productId){
-  //     dispatch(addToCart(productId))
-  //   }
-  // },[dispatch,productId])
-
   const productImage=useSelector(state=>state.productImage)
     const{shot}=productImage
     useEffect(()=>{
@@ -28,7 +17,6 @@ const Cart = () => {
      },[dispatch])
      
      const removeFromCartHandler=(_id)=>{
-      console.log('remove');
       dispatch(removeFromCart(_id))
      }
      const checkoutHndler=()=>{
@@ -40,8 +28,8 @@ const Cart = () => {
        <div className='flex flex-col justify-between '>
         {cartItems.map(item=>(
           <>
-          <div className='border border-blue-300 rounded flex flex-row-reverse items-center justify-around p-2 mt-2 mb-2 mr-auto ml-auto w-[50%] '>
-           <button onClick={()=>removeFromCartHandler(item._id)}>
+          <div key={item.id._id} className='border border-blue-300 rounded flex flex-row-reverse items-center justify-around p-2 mt-2 mb-2 mr-auto ml-auto w-[50%] '>
+           <button onClick={()=>removeFromCartHandler(item.id)}>
               <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="24px" height="24px">
                 <path d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 6.0683594 22 L 17.931641 22 L 19.634766 7 L 4.3652344 7 z"/></svg>
             </button>
@@ -49,7 +37,7 @@ const Cart = () => {
             <div className=''>
               
             {shot.map((shot,index)=>{
-                    if(shot.product_id.textile===item.textile){
+                    if(shot.product_id.textile===item.id.textile){
                       return(
                              <div  key={index}><img className='w-[100%] h-[100px]' src={shot.path} alt='...'/></div>
                             )
@@ -63,9 +51,9 @@ const Cart = () => {
             </div>
            </div>
             <div className='flex flex-col justify-between'>
-              <div>{item.textile}</div>
-              <div>{item.qty}متر</div>
-              <div>{item.price}</div>
+              <div>{item.id.textile}</div>
+              <div>{item.quantity}متر</div>
+              <div>{item.id.price}</div>
             </div>
           </div>
           </>
@@ -73,7 +61,7 @@ const Cart = () => {
           <div className='flex flex-col'>
               <div className='border border-blue-300 flex flex-row-reverse justify-between m-2 p-2'>
                 {/* <p>تعداد ({cartItems.reduce((acc,item)=>acc + item.qty, 0)})متر محصول داریم </p> */}
-                {cartItems.reduce((acc,item)=>acc+item.qty * item.price, 0)} تومان
+                {cartItems.reduce((acc,item)=>acc+item.quantity * item.id.price, 0)} تومان
                 <p className='rtl'>
                   مبلغ قابل پرداخت
                   </p>

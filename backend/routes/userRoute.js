@@ -41,7 +41,6 @@ router.post(
       });
       })
       })
-     
       )
 
 // router.post('/createusers', async (req, res) => {
@@ -92,7 +91,7 @@ router.post(
     }
     // Generate token
     const accessToken = sign({ email: user.email, id: user._id }, secretKey);
-
+    console.log(accessToken);
     res.json({ accessToken, email, msg: "you logged in" });
   });
 });

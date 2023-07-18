@@ -64,10 +64,15 @@ useEffect(()=>{
 
 
       const handleInput=(e)=>{
-          setInputMeter(e.target.value);
-          const rese=(e.target.value*productId.price);
-          setResult(rese)
-          setQty(e.target.value)
+        //   setInputMeter(e.target.value);
+        //   const rese=(e.target.value*productId.price);
+        //   setResult(rese)
+        //   setQty(e.target.value)
+        const selectedQty = parseInt(e.target.value);
+        setInputMeter(selectedQty);
+        const rese = selectedQty * productId.price;
+        setResult(rese);
+        setQty(selectedQty);
       }
 
     //   const [cart,setCart]=useState([])
@@ -76,7 +81,8 @@ useEffect(()=>{
         // navigate(`/cart/${id}?qty=${qty}`);
         //   console.log(productId);
         //   setCart([...cart,productId])
-        dispatch(addToCart({...productId,qty}))
+        //dispatch(addToCart(productId,qty))
+        dispatch(addToCart(productDetails.productId, qty, id)); 
        // navigate('/cart')
       }
     
@@ -178,17 +184,6 @@ useEffect(()=>{
                              )
                          }else{return(null)}
                     })}  
-      {/* <div className='text-center border border-blue-300 mt-2 p-2 w-1/3 m-auto'>
-        <form> 
-            <div className=' flex flex-col '>
-                <label>متر</label>
-                <input className='rtl border p-2' type='number' value={qty} onChange={handleInput} placeholder='انتخاب متراژ...'/>           
-            </div>
-            <div>
-                 <span className='rtl flex flex-rows-reverse'>{inputMeter} متر * متری {productId.price} تومان= {result} تومان </span>
-            </div>
-        </form>
-             </div> */}
       <div className='flex justify-center'>
            <button onClick={()=>addToCartHandler()}
            className='mt-2 p-2 bg-transparent hover:bg-blue-500 text-blue-700 hover:text-white border border-blue-500 rounded'>
@@ -196,8 +191,8 @@ useEffect(()=>{
             </button>
       </div>
     </div>
-                    }
-                    </>
+ }
+ </>
   )
 }
 

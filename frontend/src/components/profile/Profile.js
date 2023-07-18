@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getUserDetails, updateUserProfile } from '../../ACTION/UserAction.js';
+import { fetchBasket } from '../../ACTION/basketActions.js';
 
 const Profile = () => {
 
@@ -26,7 +27,18 @@ const Profile = () => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { success } = userUpdateProfile
 
+  const cart = useSelector((state) => state.cart)
+  const { cartItems } = cart
+
+  const basket=useSelector((state)=>state.basket)
+  const {basketItems}=basket
   
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(fetchBasket(userInfo._id));
+    }
+  }, [dispatch, userInfo,cartItems]);
+
   useEffect(() => {
     if (!userInfo) {
       navigate('/login');
@@ -42,7 +54,8 @@ const Profile = () => {
     }
   }, [dispatch, userInfo, userprofile, navigate]);
 
-    console.log(userprofile);
+    console.log("userprofile:",userprofile);
+    console.log("userInfo:",userInfo);
   const handleSubmit = (e) => {
     e.preventDefault();
     if(password !== confirmPassword){
@@ -55,11 +68,14 @@ const Profile = () => {
 
   return (
     <>
-       <div className='flex flex-row items-center justify-between border border-blue-300 m-auto mt-1 rounded'>
-        <p>product name</p>
-        <p>qty</p>
-        <p>_id</p>
-       </div>
+    <div className='flex flex-col text-center items-center justify-between border border-blue-300 m-auto mt-1 rounded'>
+    {basketItems.map((item) => (
+          <div key={item._id}>
+            <p>{item.product_id.textile}</p>
+            <p>{item.qty}</p>
+          </div>
+        ))}
+    </div>
     <div className='border border-blue-300 w-4/6 mt-5 m-auto rounded'>
     <div className='flex flex-col justify-center  '>
        <p className=' text-center mt-1 text-4xl'>پروفایل</p>

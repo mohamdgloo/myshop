@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { logout } from '../../ACTION/UserAction.js';
+import { clearCart } from '../../ACTION/CartAction.js';
 
 const Header = () => {
   const dispatch=useDispatch()
@@ -12,6 +13,7 @@ const Header = () => {
   const {userInfo}=userLogin;
   const logoutHandler=()=>{
     dispatch(logout)
+    dispatch(clearCart());
   }
   console.log('userInfo:', userInfo); 
 
@@ -33,23 +35,10 @@ const Header = () => {
           </Link>
           {userInfo ? (
            <FormControl sx={{ m: 1, maxWidth: 100,maxHeight:30 }} size="small">
-             {/* <InputLabel id="demo-simple-select-autowidth-label">{userInfo.email}</InputLabel> */}
-           <Select
-            // value={age}
-             //onChange={handleChange}
-            // displayEmpty
-            autoWidth
-            // inputProps={{ 'aria-label': 'Without label' }}
-           >
-              {/* if(userInfo.val.firstName){
-            <MenuItem value="">
-                <em>{userInfo.val.firstName}</em>
-            </MenuItem>
-              }else{ */}
+           <Select autoWidth >
             <MenuItem>
              <em>{useemail()}</em>
             </MenuItem>
-              {/* } */}
              <MenuItem >
                 <Link to='/profile'>
                   Profile
