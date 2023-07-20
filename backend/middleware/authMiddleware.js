@@ -5,15 +5,15 @@ import User from "../models/UserModel.js";
 
 
 const protect=asyncHandler( async(req,res,next)=>{
-    let token
+    let accessToken
     if(req.headers.authorization&& req.headers.authorization.startsWith('Bearer')){
         console.log("Authorization header:", req.headers.authorization);  
        try {
        // want the token
-       token =req.headers.authorization.split(' ')[1]
+       accessToken =req.headers.authorization.split(' ')[1]
        console.log(req.headers)
-       console.log("Token:", token);
-        const decoded=jwt.verify(token,secretKey);
+       console.log("accessToken:", accessToken);
+        const decoded=jwt.verify(accessToken,secretKey);
         console.log("Decoded:", decoded);
         req.user=await User.findById(decoded.id).select('-password');
         console.log("id auth:",req.user.id);
@@ -21,11 +21,11 @@ const protect=asyncHandler( async(req,res,next)=>{
         next() ;
        } catch (error) {  
         console.error(error);
-        res.status(401)
+        res.status(401)  
         throw new Error('not autorized ,token failed')
        } 
     }
-    if(!token){
+    if(!accessToken){
         res.status(401)
         throw new Error('not autorizes,no token')
     }  

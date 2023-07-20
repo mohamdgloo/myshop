@@ -8,92 +8,68 @@ import User from '../models/UserModel.js';
  const {sign}=pkg
 //create users
 const router = express.Router()
-router.post(
-  '/createusers',
-  asyncHandler(async (req, res) => { 
-    const {firstName,lastName,phone,password , email,isAdmin}=req.body;
-     // Check if the user with the same email already exists
-     const existingUser = await User.findOne({ email });
-     if (existingUser) {
-       return res.json({ error: 'User already exists' });
-     }
-      bcrypt.hash(password,10).then((hash)=>{
-
-        const users = new User({
-          firstName:firstName,
-          lastName:lastName,
-          email:email,
-          password:hash,
-          phone:phone,
-          isAdmin:isAdmin, 
-        }) 
-       // save users in database
-       // users.save().then(val=>{
-        //  res.json({msg:"add user",val})
-      //  })
-      users.save().then((val) => {
-        // Generate token for the new user
-        const accessToken = sign({ email: val.email, id: val._id }, 
-         // "importantsecret"
-         secretKey
-          );
-        res.json({ msg: "add user", val, accessToken });
-      });
-      })
-      })
-      )
-
-// router.post('/createusers', async (req, res) => {
-//   const { firstName, lastName, phone, email, password } = req.body;
-
-//   try {
-//     // Check if the user with the same email already exists
-//     const existingUser = await User.findOne({ email });
-//     if (existingUser) {
-//       return res.status(409).json({ error: 'User already exists' });
-//     }
-
-//     // Hash the password
-//     const hashedPassword = await bcrypt.hash(password, 10);
-
-//     // Create a new user
-//     const user = new User({
-//       firstName,
-//       lastName,
-//       phone,
-//       email,
-//       password: hashedPassword,
-//     });
-
-//     // Save the user in the database
-//     await user.save();
-
-//     res.json({ message: 'User registered successfully' });
-//   } catch (error) {
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
-// });
 
 
-      //login
+router.post('/createusers', asyncHandler(async (req, res) => {
+  const { firstName, lastName, phone, password, email, isAdmin } = req.body;
 
-      router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    return res.status(401).json({ error: "User doesn't exist" });
+  // Check if the user with the same email already exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return res.json({ error: 'User already exists' });
   }
 
-  bcrypt.compare(password, user.password).then((match) => {
+  try {
+    const hash = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: hash,
+      phone: phone,
+      isAdmin: isAdmin,
+    });
+
+    const savedUser = await user.save();
+    const accessToken = sign({ email: savedUser.email, id: savedUser._id }, secretKey);
+    res.json({ msg: "add user", savedUser, accessToken });
+    console.log({ msg: "add user", savedUser, accessToken });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}));
+
+
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  console.log('Received login request with email:', email);
+  console.log('Received login request with password:', password);
+  try {
+    console.log('Received login request with email:', email);
+    const user = await User.findOne({ email });
+    console.log('User found:', user);
+    if (!user) {
+      return res.status(404).json({ error: "User doesn't exist" });
+    }
+    console.log('User:', user);
+    const match = await bcrypt.compare.toString(password, user.password);
+    console.log('Password Match:', match);  
+    console.log('Stored Password Hash:', user.password);
+    // Generate token
+    const accessToken = sign({ email: user.email, id: user._id }, secretKey); 
+    console.log('Response:', { accessToken, email});
     if (!match) {
       return res.status(401).json({ error: "Wrong email or password" });
     }
-    // Generate token
-    const accessToken = sign({ email: user.email, id: user._id }, secretKey);
-    console.log(accessToken);
-    res.json({ accessToken, email, msg: "you logged in" });
-  });
+    
+    res.json({ accessToken, email, msg: "You are logged in" });
+  } catch (error) {
+    // Handle other potential errors, such as database connection issues
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
        // profile:The order of route definitions is important in Express, 

@@ -19,7 +19,7 @@ const Header = () => {
 
   const useemail=()=>{
     if (!userInfo.email) {
-    return <em>{userInfo.val.email}</em>
+    return <em>{userInfo.savedUser.email}</em>
   } else {
     return <em>{userInfo.email}</em>
   }

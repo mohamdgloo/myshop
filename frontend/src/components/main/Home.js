@@ -9,7 +9,7 @@ import CatAndSub from '../category/CatAndSub';
 import { listProductImage, listProducts } from '../../ACTION/ProductAction';
 const Home = () => {
   
-  const[practical,setPractical]=useState([])
+  //const[practical,setPractical]=useState([])
   //const value = React.useContext(ImageContext);  
 
   const dispatch=useDispatch()
@@ -26,26 +26,26 @@ const Home = () => {
     dispatch(listProductImage())
    },[dispatch])
    
-  useEffect(()=>{
-    const fetchProPra=async()=>{
-      const resProPra=await axios.get('/api/productpractical/productpractical')
-      setPractical(resProPra.data)
-      //console.log(resProPra);
-    }
-    fetchProPra()
-  },[])
+  // useEffect(()=>{
+  //   const fetchProPra=async()=>{
+  //     const resProPra=await axios.get('/api/productpractical/productpractical')
+  //     setPractical(resProPra.data)
+  //     //console.log(resProPra);
+  //   }
+  //   fetchProPra()
+  // },[])
 
 
   return (
     <div className=' m-auto mt-2 mb-2 h-auto md:w-5/6 bg-gray-50'>  
      <CatAndSub/>
-      <div className='rtl grid grid-rows-2 gap-6 my-5'>
+      {/* <div className='rtl grid grid-rows-2 gap-6 my-5'>
             {practical.map((pra,index)=>{
                 return(
                   <div key={index} >{pra.practical_id.practical}</div>
                 )
             })}
-       </div>
+       </div> */}
       
 {/* <p className='rtl'>image with context</p>
       <div className='rtl grid grid-cols-6 gap-2 my-5'>
@@ -55,14 +55,14 @@ const Home = () => {
           )
         })}
       </div> */}
-      <p className='rtl'>image with redux</p>
+      {/* <p className='rtl'>image with redux</p>
       <div className='rtl grid grid-cols-6 gap-2 my-5'>
         {shot.map((shot,index)=>{
           return(
             <div  key={index}><img src={shot.path} alt='...'/></div>
           )
         })}
-      </div>
+      </div> */} 
      {loading ? <h2>درحال بارگیری...</h2> : error ?<h3>{error}</h3>:
      
        <div className='rtl grid grid-cols-2 gap-4 ' >
